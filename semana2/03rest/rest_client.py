@@ -53,4 +53,4 @@ actualizar_response = requests.request(
     method="POST", url=ruta_actualizar, 
     json=estudiante_actualizado
 )
-print(actualizar_response.text)gt
+print(actualizar_response.text)
