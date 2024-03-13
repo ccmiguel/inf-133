@@ -8,19 +8,19 @@ estudiantes = [
         "id": 1,
         "nombre": "Pedrito",
         "apellido": "Garcia",
-        "carrera": "Ingenieria de Sistemas",
+        "carrera": "Ingeniería de Sistemas",
     },
     {
         "id": 2,
         "nombre": "Gabriel",
         "apellido": "Garcia",
-        "carrera": "Ingenieria de Software",
+        "carrera": "Ingeniería de Software",
     },
     {
         "id": 3,
-        "nombre": "Jorge",
+        "nombre": "Mario",
         "apellido": "Garcia",
-        "carrera": "Ingenieria de Minas",
+        "carrera": "Ingeniería de Minas",
     },
 ]
 
@@ -140,39 +140,6 @@ class RESTRequestHandler(BaseHTTPRequestHandler):
         data = self.rfile.read(content_length)
         data = json.loads(data.decode("utf-8"))
         return data
-    
-    
-    
-    def find_student(id):
-        return next(
-            (estudiante for estudiante in estudiantes if estudiante["id"] == id),
-            None,
-        )
-
-    def filter_students_by_name(nombre):
-        return [
-            estudiante for estudiante in estudiantes if estudiante["nombre"] == nombre
-        ]
-
-    def add_student(data):
-        data["id"] = len(estudiantes) + 1
-        estudiantes.append(data)
-        return estudiantes
-
-    def update_student(id, data):
-        estudiante = EstudiantesService.find_student(id)
-        if estudiante:
-            estudiante.update(data)
-            return estudiantes
-        else:
-            return None
-
-
-    def delete_students():
-        estudiantes.clear()
-        return estudiantes
-    
-    
 
 
 def run_server(port=8000):
