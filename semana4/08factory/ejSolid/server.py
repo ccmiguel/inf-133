@@ -34,15 +34,6 @@ class DeliveryFactory:
         else:
             raise ValueError("Tipo de vehículo de entrega no válido")
 
-class DeliveryServer:
-    def create_delivery_vehicle(self, vehicle_type):
-        if vehicle_type == "motorcycle":
-            return Motorcycle()
-        elif vehicle_type == "drone":
-            return Drone()
-        else:
-            raise ValueError("Tipo de vehículo de entrega no válido")
-
 class DeliveryRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/delivery":
