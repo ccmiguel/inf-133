@@ -12,6 +12,10 @@ class Motorcycle(DeliveryVehicle):
 class Drone(DeliveryVehicle):
     def deliver(self):
         return "Entrega realizada por dron"
+    
+class Scout(DeliveryVehicle):
+    def deliver(self):
+        return "Entrega realizada por scout"
 
 class DeliveryFactory:
     def create_delivery_vehicle(self, vehicle_type):
@@ -20,7 +24,10 @@ class DeliveryFactory:
         elif vehicle_type == "drone":
             return Drone()
         else:
-            raise ValueError("Tipo de vehículo de entrega no válido")
+            if vehicle_type == "scout":
+                return Scout()
+            else:
+                raise ValueError("Tipo de vehículo de entrega no válido")
 
 class DeliveryRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):

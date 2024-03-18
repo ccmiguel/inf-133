@@ -1,6 +1,3 @@
-
-    
-
 # Importamos la biblioteca requests para hacer peticiones HTTP
 import requests
 
@@ -24,21 +21,6 @@ else:
 
 # Cambiamos el tipo de vehículo a "drone"
 vehicle_type = "drone"
-data = {"vehicle_type": vehicle_type}
-
-# Hacemos otra petición POST a la URL con los nuevos datos y los mismos encabezados
-response = requests.post(url, json=data, headers=headers)
-
-if response.status_code == 200:
-    print(response.text)
-else:
-    print("Error scheduling delivery:", response.text)
-    
-    
-    
-    
-# Cambiamos el tipo de vehículo a "scout"
-vehicle_type = "scout"
 data = {"vehicle_type": vehicle_type}
 
 # Hacemos otra petición POST a la URL con los nuevos datos y los mismos encabezados
