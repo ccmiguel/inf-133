@@ -20,7 +20,7 @@ json = {
         "content": "¡Bienvenidos a mi blog! Aquí hay otra publicación.",
     },
 }
-response = requests.get(f"{url}/posts", data=json)
+response = requests.get(f"{url}/post", data=json)
 print(response.text)
 
 #put
@@ -30,7 +30,7 @@ put_data = {
         "content": "¡Hola mundo! Esta es mi primera experiecia como estudiante.",
     }
 }
-response = requests.put(f"{url}/posts", data=put_data)
+response = requests.put(f"{url}/post", data=put_data)
 print(response.text)
 
 #delete
