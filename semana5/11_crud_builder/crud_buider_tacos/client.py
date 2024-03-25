@@ -25,7 +25,7 @@ print(response.json())
 edit_taco = {
     "base": "Tortilla",
     "guiso": "Espeso",
-    "toppings": ["Cebolla", "Queso"],
+    "toppings": ["Cebolla", "Chile"],
     "salsa": "soya"
 }
 response = requests.post(url, json=edit_taco, headers=headers)
