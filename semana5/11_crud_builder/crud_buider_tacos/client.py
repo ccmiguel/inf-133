@@ -1,6 +1,6 @@
 import requests
 
-url = "http://localhost:8000/pizzas"
+url = "http://localhost:8000/tacos"
 headers = {'Content-type': 'application/json'}
 
 # GET /tacos
