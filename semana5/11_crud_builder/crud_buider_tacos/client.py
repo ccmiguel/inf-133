@@ -9,7 +9,7 @@ print(response.json())
 
 # POST /tacos 
 mi_taco = {
-    "base ": "Grande",
+    "base": "Grande",
     "guiso": "Delgada",
     "toppings": ["Jamon", "Queso"],
     "salsa": "Delgada"
@@ -23,7 +23,7 @@ print(response.json())
 
 # PUT /tacos/1
 edit_taco = {
-    "base ": "Grande",
+    "base": "Grande",
     "guiso": "Delgada",
     "toppings": ["Pepperoni", "Queso"],
     "salsa": "Delgada"
