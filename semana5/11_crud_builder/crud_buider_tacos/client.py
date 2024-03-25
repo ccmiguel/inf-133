@@ -9,10 +9,10 @@ print(response.json())
 
 # POST /tacos 
 mi_taco = {
-    "base": "Grande",
-    "guiso": "Delgada",
-    "toppings": ["Jamon", "Queso"],
-    "salsa": "Delgada"
+    "base": "Jitomate",
+    "guiso": "Espeso",
+    "toppings": ["Jamon", "lechuga"],
+    "salsa": "tomate"
 }
 response = requests.post(url, json=mi_taco, headers=headers)
 print(response.json())
