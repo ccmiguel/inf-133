@@ -44,53 +44,58 @@ class Taqueria:
         self.builder = builder
 
     def create_taco(self, base, guiso, toppings, salsa):
-        self.builder.set_tamaño(tamaño)
-        self.builder.set_masa(masa)
+        self.builder.set_base(base)
+        self.builder.set_guiso(guiso)
         for topping in toppings:
             self.builder.add_topping(topping)
-        return self.builder.get_pizza()
+        self.builder.set_salsa(salsa)
+        return self.builder.get_taco()
 
 
 # Aplicando el principio de responsabilidad única (S de SOLID)
-class PizzaService:
+class TacoService:
     def __init__(self):
-        self.builder = PizzaBuilder()
-        self.pizzeria = Pizzeria(self.builder)
+        self.builder = TacoBuilder()
+        self.taqueria = Taqueria(self.builder)
 
-    def create_pizza(self, post_data):
-        tamaño = post_data.get("tamaño", None)
-        masa = post_data.get("masa", None)
+    def create_taco(self, post_data):
+        base = post_data.get("base", None)
+        guiso = post_data.get("guiso", None)
         toppings = post_data.get("toppings", [])
+        salsa = post_data.get("salsa", None)
 
-        pizza = self.pizzeria.create_pizza(tamaño, masa, toppings)
-        pizzas[len(pizzas) + 1] = pizza
+        taco = self.taqueria.create_taco(base, guiso, toppings, salsa)
+        tacos[len(tacos) + 1] = taco
         
-        return pizza
+        return taco
 
-    def read_pizzas(self):
-        return {index: pizza.__dict__ for index, pizza in pizzas.items()}
+    def read_tacos(self):
+        return {index: taco.__dict__ for index, taco in taco.items()}
 
     def update_pizza(self, index, post_data):
-        if index in pizzas:
-            pizza = pizzas[index]
-            tamaño = post_data.get("tamaño", None)
-            masa = post_data.get("masa", None)
+        if index in tacos:
+            taco = tacos[index]
+            base = post_data.get("base", None)
+            guiso = post_data.get("guiso", None)
             toppings = post_data.get("toppings", [])
+            salsa = post_data.get("salsa", None)
 
-            if tamaño:
-                pizza.tamaño = tamaño
-            if masa:
-                pizza.masa = masa
+            if base:
+                taco.base = base
+            if guiso:
+                taco.guiso = guiso
             if toppings:
-                pizza.toppings = toppings
+                taco.toppings = toppings
+            if salsa:
+                taco.salsa = salsa
 
-            return pizza
+            return taco
         else:
             return None
 
-    def delete_pizza(self, index):
-        if index in pizzas:
-            return pizzas.pop(index)
+    def delete_taco(self, index):
+        if index in tacos:
+            return tacos.pop(index)
         else:
             return None
 
@@ -111,31 +116,31 @@ class HTTPDataHandler:
 
 
 # Manejador de solicitudes HTTP
-class PizzaHandler(BaseHTTPRequestHandler):
+class TacoHandler(BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        self.controller = PizzaService()
+        self.controller = TacoService()
         super().__init__(*args, **kwargs)
 
     def do_POST(self):
-        if self.path == "/pizzas":
+        if self.path == "/tacos":
             data = HTTPDataHandler.handle_reader(self)
-            response_data = self.controller.create_pizza(data)
+            response_data = self.controller.create_taco(data)
             HTTPDataHandler.handle_response(self, 200, response_data.__dict__)
         else:
             HTTPDataHandler.handle_response(self, 404, {"Error": "Ruta no existente"})
 
     def do_GET(self):
-        if self.path == "/pizzas":
-            response_data = self.controller.read_pizzas()
+        if self.path == "/tacos":
+            response_data = self.controller.read_tacos()
             HTTPDataHandler.handle_response(self, 200, response_data)
         else:
             HTTPDataHandler.handle_response(self, 404, {"Error": "Ruta no existente"})
 
     def do_PUT(self):
-        if self.path.startswith("/pizzas/"):
+        if self.path.startswith("/tacos/"):
             index = int(self.path.split("/")[2])
             data = HTTPDataHandler.handle_reader(self)
-            response_data = self.controller.update_pizza(index, data)
+            response_data = self.controller.update_taco(index, data)
             if response_data:
                 HTTPDataHandler.handle_response(self, 200, response_data.__dict__)
             else:
@@ -146,22 +151,22 @@ class PizzaHandler(BaseHTTPRequestHandler):
             HTTPDataHandler.handle_response(self, 404, {"Error": "Ruta no existente"})
 
     def do_DELETE(self):
-        if self.path.startswith("/pizzas/"):
+        if self.path.startswith("/tacos/"):
             index = int(self.path.split("/")[2])
-            deleted_pizza = self.controller.delete_pizza(index)
-            if deleted_pizza:
+            deleted_taco = self.controller.delete_taco(index)
+            if deleted_taco:
                 HTTPDataHandler.handle_response(
-                    self, 200, {"message": "Pizza eliminada correctamente"}
+                    self, 200, {"message": "Taco eliminado correctamente"}
                 )
             else:
                 HTTPDataHandler.handle_response(
-                    self, 404, {"Error": "Índice de pizza no válido"}
+                    self, 404, {"Error": "Índice de taco no válido"}
                 )
         else:
             HTTPDataHandler.handle_response(self, 404, {"Error": "Ruta no existente"})
 
 
-def run(server_class=HTTPServer, handler_class=PizzaHandler, port=8000):
+def run(server_class=HTTPServer, handler_class=TacoHandler, port=8000):
     server_address = ("", port)
     httpd = server_class(server_address, handler_class)
     print(f"Iniciando servidor HTTP en puerto {port}...")
