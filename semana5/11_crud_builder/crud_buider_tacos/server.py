@@ -72,7 +72,7 @@ class TacoService:
     def read_tacos(self):
         return {index: taco.__dict__ for index, taco in taco.items()}
 
-    def update_pizza(self, index, post_data):
+    def update_taco(self, index, post_data):
         if index in tacos:
             taco = tacos[index]
             base = post_data.get("base", None)
@@ -145,7 +145,7 @@ class TacoHandler(BaseHTTPRequestHandler):
                 HTTPDataHandler.handle_response(self, 200, response_data.__dict__)
             else:
                 HTTPDataHandler.handle_response(
-                    self, 404, {"Error": "Índice de pizza no válido"}
+                    self, 404, {"Error": "Índice de taco no válido"}
                 )
         else:
             HTTPDataHandler.handle_response(self, 404, {"Error": "Ruta no existente"})
