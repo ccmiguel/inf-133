@@ -70,7 +70,7 @@ class TacoService:
         return taco
 
     def read_tacos(self):
-        return {index: taco.__dict__ for index, taco in taco.items()}
+        return {index: taco.__dict__ for index, taco in tacos.items()}
 
     def update_taco(self, index, post_data):
         if index in tacos:
