@@ -23,8 +23,8 @@ print(response.json())
 
 # PUT /tacos/1
 edit_taco = {
-    "tamaño": "Mediano",
-    "masa": "Gruesa",
+    "base ": "Grande",
+    "guiso": "Delgada",
     "toppings": ["Pepperoni", "Queso"],
     "salsa": "Delgada"
 }
