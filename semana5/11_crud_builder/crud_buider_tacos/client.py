@@ -23,10 +23,10 @@ print(response.json())
 
 # PUT /tacos/1
 edit_taco = {
-    "base": "Grande",
-    "guiso": "Delgada",
-    "toppings": ["Pepperoni", "Queso"],
-    "salsa": "Delgada"
+    "base": "Tortilla",
+    "guiso": "Espeso",
+    "toppings": ["Cebolla", "Queso"],
+    "salsa": "soya"
 }
 response = requests.post(url, json=edit_taco, headers=headers)
 print(response.json())
