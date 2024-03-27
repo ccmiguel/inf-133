@@ -101,7 +101,7 @@ class DeliveryRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/deliveries":
             data = HTTPDataHandler.handle_reader(self)
-            response_data = self.delivery_service.add_vehicle(data)
+            response_data = self.delivery_service.add_chocolate(data)
             HTTPDataHandler.handle_response(self, 201, response_data.__dict__)
         else:
             HTTPDataHandler.handle_response(
