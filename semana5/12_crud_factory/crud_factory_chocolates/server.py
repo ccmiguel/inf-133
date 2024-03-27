@@ -14,8 +14,8 @@ class DeliveryChocolate:
 
 
 class Tableta(DeliveryChocolate):
-    def __init__(self, peso, sabor):
-        super().__init__("tableta", peso, sabor)
+    def __init__(self, peso, sabor, relleno):
+        super().__init__("tableta", peso, sabor, relleno)
 
 
 class Bombon(DeliveryChocolate):
@@ -31,7 +31,7 @@ class DeliveryFactory:
     @staticmethod
     def create_chocolate(chocolate_type, peso, sabor, relleno):
         if chocolate_type == "tableta":
-            return Tableta(peso, sabor)
+            return Tableta(peso, sabor, None)
         elif chocolate_type == "bombon":
             return Bombon(peso, sabor, relleno)
         elif chocolate_type == "trufa":
