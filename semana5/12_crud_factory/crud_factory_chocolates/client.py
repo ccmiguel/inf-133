@@ -5,20 +5,20 @@ url = "http://localhost:8000/deliveries"
 headers = {"Content-Type": "application/json"}
 
 # POST /deliveries
-new_vehicle_data = {
-    "peso": "drone",
-    "sabor": "ABC-123",
-    "relleno": 10
+new_chocolate_data = {
+    "chocolate_type": "tableta",
+    "peso": 50,
+    "sabor": "Vainilla"
 }
-response = requests.post(url=url, json=new_vehicle_data, headers=headers)
+response = requests.post(url=url, json=new_chocolate_data, headers=headers)
 print(response.json())
 
-new_vehicle_data = {
-    "vehicle_type": "motorcycle",
-    "plate_number": "ZTE-204",
-    "capacity": 25
+new_chocolate_data = {
+    "chocolate_type": "bombon",
+    "peso": 10,
+    "sabor": "Almendra"
 }
-response = requests.post(url=url, json=new_vehicle_data, headers=headers)
+response = requests.post(url=url, json=new_chocolate_data, headers=headers)
 print(response.json())
 
 
@@ -27,21 +27,21 @@ response = requests.get(url=url)
 print(response.json())
 
 # PUT /deliveries/{vehicle_id}
-vehicle_id_to_update = 1
-updated_vehicle_data = {
-    "plate_number": "XYZ789"
+chocolate_id_to_update = 1
+updated_chocolate_data = {
+    "peso": "89"
 }
-response = requests.put(f"{url}/{vehicle_id_to_update}", json=updated_vehicle_data)
-print("Vehículo actualizado:", response.json())
+response = requests.put(f"{url}/{chocolate_id_to_update}", json=updated_chocolate_data)
+print("Chocolate actualizado:", response.json())
 
 # GET /deliveries
 response = requests.get(url=url)
 print(response.json())
 
-# DELETE /deliveries/{vehicle_id}
-vehicle_id_to_delete = 1
-response = requests.delete(f"{url}/{vehicle_id_to_delete}")
-print("Vehículo eliminado:", response.json())
+# DELETE /deliveries/{chocoloate_id}
+chocolate_id_to_delete = 1
+response = requests.delete(f"{url}/{chocolate_id_to_delete}")
+print("Chocolate eliminado:", response.json())
 
 # GET /deliveries
 response = requests.get(url=url)
