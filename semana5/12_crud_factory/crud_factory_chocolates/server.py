@@ -1,36 +1,40 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 
-# Base de datos simulada de vehículos
-vehicles = {}
+# Base de datos simulada de chocolates
+chocolates = {}
 
 
-class DeliveryVehicle:
-    def __init__(self, vehicle_type, plate_number, capacity):
-        self.vehicle_type = vehicle_type
-        self.plate_number = plate_number
-        self.capacity = capacity
+class DeliveryChocolate:
+    def __init__(self, chocolate_type, peso, sabor):
+        self.chocolate_type = chocolate_type
+        self.peso = peso
+        self.sabor = sabor
 
 
-class Motorcycle(DeliveryVehicle):
-    def __init__(self, plate_number, capacity):
-        super().__init__("motorcycle", plate_number, capacity)
+class Tableta(DeliveryChocolate):
+    def __init__(self, peso, sabor):
+        super().__init__("tableta", peso, sabor)
 
 
-class Drone(DeliveryVehicle):
-    def __init__(self, plate_number, capacity):
-        super().__init__("drone", plate_number, capacity)
+class Bombon(DeliveryChocolate):
+    def __init__(self, peso, sabor):
+        super().__init__("bombon", peso, sabor)
 
-
+class Trufa(DeliveryChocolate):
+    def __init__(self, peso, sabor):
+        super().__init__("trufa", peso, sabor)
+        
+        
 class DeliveryFactory:
     @staticmethod
-    def create_vehicle(vehicle_type, plate_number, capacity):
-        if vehicle_type == "drone":
-            return Drone(plate_number, capacity)
-        elif vehicle_type == "motorcycle":
-            return Motorcycle(plate_number, capacity)
+    def create_chocolate(chocolate_type, peso, sabor):
+        if chocolate_type == "tableta":
+            return Tableta(peso, sabor)
+        elif chocolate_type == "bombon":
+            return Bombon(peso, sabor)
         else:
-            raise ValueError("Tipo de vehículo de entrega no válido")
+            raise ValueError("Tipo de chocolate de entrega no válido")
 
 
 class HTTPDataHandler:
@@ -52,37 +56,37 @@ class DeliveryService:
     def __init__(self):
         self.factory = DeliveryFactory()
 
-    def add_vehicle(self, data):
-        vehicle_type = data.get("vehicle_type", None)
-        plate_number = data.get("plate_number", None)
-        capacity = data.get("capacity", None)
+    def add_chocolate(self, data):
+        chocolate_type = data.get("chocolate_type", None)
+        peso = data.get("peso", None)
+        sabor = data.get("sabor", None)
 
-        delivery_vehicle = self.factory.create_vehicle(
-            vehicle_type, plate_number, capacity
+        delivery_chocolate = self.factory.create_chocolate(
+            chocolate_type, peso, sabor
         )
-        vehicles[len(vehicles) + 1] = delivery_vehicle
-        return delivery_vehicle
+        chocolates[len(chocolates) + 1] = delivery_chocolate
+        return delivery_chocolate
 
-    def list_vehicles(self):
-        return {index: vehicle.__dict__ for index, vehicle in vehicles.items()}
+    def list_chocolates(self):
+        return {index: chocolate.__dict__ for index, chocolate in chocolates.items()}
 
-    def update_vehicle(self, vehicle_id, data):
-        if vehicle_id in vehicles:
-            vehicle = vehicles[vehicle_id]
-            plate_number = data.get("plate_number", None)
-            capacity = data.get("capacity", None)
-            if plate_number:
-                vehicle.plate_number = plate_number
-            if capacity:
-                vehicle.capacity = capacity
-            return vehicle
+    def update_chocolate(self, chocolate_id, data):
+        if chocolate_id in chocolates:
+            chocolate = chocolates[chocolate_id]
+            peso = data.get("peso", None)
+            sabor = data.get("sabor", None)
+            if peso:
+                chocolate.peso = peso
+            if sabor:
+                chocolate.sabor = sabor
+            return chocolate
         else:
             raise None
 
-    def delete_vehicle(self, vehicle_id):
-        if vehicle_id in vehicles:
-            del vehicles[vehicle_id]
-            return {"message": "Vehículo eliminado"}
+    def delete_chocolate(self, chocolate_id):
+        if chocolate_id in chocolates:
+            del chocolates[chocolate_id]
+            return {"message": "Chocolate eliminado"}
         else:
             return None
 
@@ -104,7 +108,7 @@ class DeliveryRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/deliveries":
-            response_data = self.delivery_service.list_vehicles()
+            response_data = self.delivery_service.list_chocolates()
             HTTPDataHandler.handle_response(self, 200, response_data)
         else:
             HTTPDataHandler.handle_response(
@@ -113,14 +117,14 @@ class DeliveryRequestHandler(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         if self.path.startswith("/deliveries/"):
-            vehicle_id = int(self.path.split("/")[-1])
+            chocolate_id = int(self.path.split("/")[-1])
             data = HTTPDataHandler.handle_reader(self)
-            response_data = self.delivery_service.update_vehicle(vehicle_id, data)
+            response_data = self.delivery_service.update_chocolate(chocolate_id, data)
             if response_data:
                 HTTPDataHandler.handle_response(self, 200, response_data.__dict__)
             else:
                 HTTPDataHandler.handle_response(
-                    self, 404, {"message": "Vehículo no encontrado"}
+                    self, 404, {"message": "Chocolate no encontrado"}
                 )
         else:
             HTTPDataHandler.handle_response(
@@ -129,13 +133,13 @@ class DeliveryRequestHandler(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         if self.path.startswith("/deliveries/"):
-            vehicle_id = int(self.path.split("/")[-1])
-            response_data = self.delivery_service.delete_vehicle(vehicle_id)
+            chocolate_id = int(self.path.split("/")[-1])
+            response_data = self.delivery_service.delete_chocolate(chocolate_id)
             if response_data:
                 HTTPDataHandler.handle_response(self, 200, response_data)
             else:
                 HTTPDataHandler.handle_response(
-                    self, 404, {"message": "Vehículo no encontrado"}
+                    self, 404, {"message": "Chocolate no encontrado"}
                 )
         else:
             HTTPDataHandler.handle_response(

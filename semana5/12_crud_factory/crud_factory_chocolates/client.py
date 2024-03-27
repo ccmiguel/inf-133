@@ -6,9 +6,9 @@ headers = {"Content-Type": "application/json"}
 
 # POST /deliveries
 new_vehicle_data = {
-    "vehicle_type": "drone",
-    "plate_number": "ABC-123",
-    "capacity": 10
+    "peso": "drone",
+    "sabor": "ABC-123",
+    "relleno": 10
 }
 response = requests.post(url=url, json=new_vehicle_data, headers=headers)
 print(response.json())
