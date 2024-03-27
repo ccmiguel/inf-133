@@ -6,17 +6,19 @@ headers = {"Content-Type": "application/json"}
 
 # POST /deliveries
 new_chocolate_data = {
-    "chocolate_type": "tableta",
+    "chocolate_type": "bombon",
     "peso": 50,
-    "sabor": "Vainilla"
+    "sabor": "Vainilla",
+    "relleno": "Fresa"   
 }
 response = requests.post(url=url, json=new_chocolate_data, headers=headers)
 print(response.json())
 
 new_chocolate_data = {
-    "chocolate_type": "bombon",
+    "chocolate_type": "trufa",
     "peso": 10,
-    "sabor": "Almendra"
+    "sabor": "Almendra",
+    "relleno": "Durazno" 
 }
 response = requests.post(url=url, json=new_chocolate_data, headers=headers)
 print(response.json())

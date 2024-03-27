@@ -6,10 +6,11 @@ chocolates = {}
 
 
 class DeliveryChocolate:
-    def __init__(self, chocolate_type, peso, sabor):
+    def __init__(self, chocolate_type, peso, sabor, relleno):
         self.chocolate_type = chocolate_type
         self.peso = peso
         self.sabor = sabor
+        self.relleno = relleno
 
 
 class Tableta(DeliveryChocolate):
@@ -18,23 +19,23 @@ class Tableta(DeliveryChocolate):
 
 
 class Bombon(DeliveryChocolate):
-    def __init__(self, peso, sabor):
-        super().__init__("bombon", peso, sabor)
+    def __init__(self, peso, sabor, relleno):
+        super().__init__("bombon", peso, sabor, relleno)
 
 class Trufa(DeliveryChocolate):
-    def __init__(self, peso, sabor):
-        super().__init__("trufa", peso, sabor)
+    def __init__(self, peso, sabor, relleno):
+        super().__init__("trufa", peso, sabor, relleno)
         
         
 class DeliveryFactory:
     @staticmethod
-    def create_chocolate(chocolate_type, peso, sabor):
+    def create_chocolate(chocolate_type, peso, sabor, relleno):
         if chocolate_type == "tableta":
             return Tableta(peso, sabor)
         elif chocolate_type == "bombon":
-            return Bombon(peso, sabor)
+            return Bombon(peso, sabor, relleno)
         elif chocolate_type == "trufa":
-            return Trufa(peso, sabor)
+            return Trufa(peso, sabor, relleno)
         else:
             raise ValueError("Tipo de chocolate de entrega no válido")
 
@@ -62,9 +63,10 @@ class DeliveryService:
         chocolate_type = data.get("chocolate_type", None)
         peso = data.get("peso", None)
         sabor = data.get("sabor", None)
+        relleno = data.get("relleno", None)
 
         delivery_chocolate = self.factory.create_chocolate(
-            chocolate_type, peso, sabor
+            chocolate_type, peso, sabor, relleno
         )
         chocolates[len(chocolates) + 1] = delivery_chocolate
         return delivery_chocolate
@@ -77,10 +79,13 @@ class DeliveryService:
             chocolate = chocolates[chocolate_id]
             peso = data.get("peso", None)
             sabor = data.get("sabor", None)
+            relleno = data.get("relleno", None)
             if peso:
                 chocolate.peso = peso
             if sabor:
                 chocolate.sabor = sabor
+            if sabor:
+                chocolate.relleno = relleno
             return chocolate
         else:
             raise None
