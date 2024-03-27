@@ -33,6 +33,8 @@ class DeliveryFactory:
             return Tableta(peso, sabor)
         elif chocolate_type == "bombon":
             return Bombon(peso, sabor)
+        elif chocolate_type == "trufa":
+            return Trufa(peso, sabor)
         else:
             raise ValueError("Tipo de chocolate de entrega no válido")
 
