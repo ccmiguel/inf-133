@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "http://localhost:8000/deliveries"
+url = "http://localhost:8000/chocolates"
 headers = {"Content-Type": "application/json"}
 
 # POST /deliveries

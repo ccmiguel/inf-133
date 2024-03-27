@@ -99,7 +99,7 @@ class DeliveryRequestHandler(BaseHTTPRequestHandler):
         super().__init__(*args, **kwargs)
 
     def do_POST(self):
-        if self.path == "/deliveries":
+        if self.path == "/chocolates":
             data = HTTPDataHandler.handle_reader(self)
             response_data = self.delivery_service.add_chocolate(data)
             HTTPDataHandler.handle_response(self, 201, response_data.__dict__)
@@ -109,7 +109,7 @@ class DeliveryRequestHandler(BaseHTTPRequestHandler):
             )
 
     def do_GET(self):
-        if self.path == "/deliveries":
+        if self.path == "/chocolates":
             response_data = self.delivery_service.list_chocolates()
             HTTPDataHandler.handle_response(self, 200, response_data)
         else:
@@ -118,7 +118,7 @@ class DeliveryRequestHandler(BaseHTTPRequestHandler):
             )
 
     def do_PUT(self):
-        if self.path.startswith("/deliveries/"):
+        if self.path.startswith("/chocolates/"):
             chocolate_id = int(self.path.split("/")[-1])
             data = HTTPDataHandler.handle_reader(self)
             response_data = self.delivery_service.update_chocolate(chocolate_id, data)
@@ -134,7 +134,7 @@ class DeliveryRequestHandler(BaseHTTPRequestHandler):
             )
 
     def do_DELETE(self):
-        if self.path.startswith("/deliveries/"):
+        if self.path.startswith("/chocolates/"):
             chocolate_id = int(self.path.split("/")[-1])
             response_data = self.delivery_service.delete_chocolate(chocolate_id)
             if response_data:
