@@ -118,7 +118,7 @@ conn.execute(
 # Insertar datos de pedidos
 conn.execute(
     """
-    INSERT INTO PEDIDOS (plato_id, mesa_id, , cantidad, fecha) 
+    INSERT INTO PEDIDOS (plato_id, mesa_id, cantidad, fecha) 
     VALUES (1, 2, 2, '2024-04-01')
     """
 )
