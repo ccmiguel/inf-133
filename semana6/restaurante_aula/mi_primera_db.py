@@ -176,7 +176,7 @@ conn.execute(
 )
 # Listar datos de pedidos
 print("\nEJERCICIO_1:")
-print("\nPEDIDOS:")
+print("\nPLATOS:")
 cursor = conn.execute(
     "SELECT * FROM PLATOS"
 )
