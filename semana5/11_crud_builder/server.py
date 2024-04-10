@@ -66,12 +66,12 @@ class PizzaService:
     def read_pizzas(self):
         return {index: pizza.__dict__ for index, pizza in pizzas.items()}
 
-    def update_pizza(self, index, post_data):
+    def update_pizza(self, index, data):
         if index in pizzas:
             pizza = pizzas[index]
-            tamaño = post_data.get("tamaño", None)
-            masa = post_data.get("masa", None)
-            toppings = post_data.get("toppings", [])
+            tamaño = data.get("tamaño", None)
+            masa = data.get("masa", None)
+            toppings = data.get("toppings", [])
 
             if tamaño:
                 pizza.tamaño = tamaño
@@ -116,7 +116,7 @@ class PizzaHandler(BaseHTTPRequestHandler):
         if self.path == "/pizzas":
             data = HTTPDataHandler.handle_reader(self)
             response_data = self.controller.create_pizza(data)
-            HTTPDataHandler.handle_response(self, 200, response_data.__dict__)
+            HTTPDataHandler.handle_response(self, 201, response_data.__dict__)
         else:
             HTTPDataHandler.handle_response(self, 404, {"Error": "Ruta no existente"})
 
