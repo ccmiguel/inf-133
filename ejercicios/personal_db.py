@@ -18,6 +18,22 @@ except sqlite3.OperationalError:
     print("La tabla DEPARTAMENTOS ya existe")
 
 
+    
+# Insertar datos de departamento
+conn.execute(
+    """
+    INSERT INTO DEPARTAMENTOS (nombre, fecha_creacion) 
+    VALUES ('Ventas','2020-04-10')
+    """
+)
+conn.execute(
+    """
+    INSERT INTO DEPARTAMENTOS (nombre, fecha_creacion) 
+    VALUES ('Marketing','2020-04-11')
+    """
+)
+
+
 # Consultar datos
 print("DEPARTAMENTOS:")
 cursor = conn.execute("SELECT * FROM DEPARTAMENTOS")
@@ -45,6 +61,25 @@ try:
 except sqlite3.OperationalError:
     print("La tabla CARGOS ya existe")
 
+# Insertar datos de CARGOS
+conn.execute(
+    """
+    INSERT INTO CARGOS (nombre, nivel, fecha_creacion) 
+    VALUES ('Gerente de Ventas','Senior','2020-04-10')
+    """
+)
+conn.execute(
+    """
+    INSERT INTO CARGOS (nombre, nivel, fecha_creacion) 
+    VALUES ('Analista de Marketing','Junior','2020-04-11')
+    """
+)
+conn.execute(
+    """
+    INSERT INTO CARGOS (nombre, nivel, fecha_creacion) 
+    VALUES ('Representante de Ventas','Junior','2020-04-12')
+    """
+)
 
 # Consultar datos 
 print("\nCARGOS:")
@@ -117,12 +152,11 @@ try:
         CREATE TABLE SALARIOS
         (id INTEGER PRIMARY KEY,
         empleado_id INTEGER NOT NULL,
-        nombre TEXT NOT NULL,
         salario REAL NOT NULL,
         fecha_inicio TEXT NOT NULL,
         fecha_fin TEXT NOT NULL,
         fecha_creacion TEXT NOT NULL,
-        FOREIGN KEY (empleado_id) REFERENCES EMPLEADOS(id);
+        FOREIGN KEY (empleado_id) REFERENCES EMPLEADOS(id));
         """
     )
 except sqlite3.OperationalError:
@@ -132,7 +166,7 @@ except sqlite3.OperationalError:
 conn.execute(
     """
     INSERT INTO SALARIOS (empleado_id,salario,fecha_inicio,fecha_fin,fecha_creacion) 
-    VALUES (1,3000,'2024-04-01','2023-05-15','2023-05-15')
+    VALUES (1,3000 ,'2024-04-01','2023-05-15','2023-05-15')
     """
 )
 conn.execute(

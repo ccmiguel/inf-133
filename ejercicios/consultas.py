@@ -1,64 +1,51 @@
+# Importar módulo sqlite3
+import sqlite3
 
-# Insertar datos de EMPLEADOS
-conn.execute(
+# Crear conexión a la base de datos
+conn = sqlite3.connect("personal.db")
+
+# Consultar datos de Personal JOIN
+print("\nPERSONAL: EJERCICIOS_1")
+
+cursor = conn.execute(
     """
-    INSERT INTO EMPLEADOS (departamento_id, cargo_id, nombre, apellido_paterno, apellido_materno, fecha_contratacion) 
-    VALUES (1,1,'Juan','Gonzales','Perez','2023-05-15')
-    """
-)
-conn.execute(
-    """
-    INSERT INTO EMPLEADOS (departamento_id, cargo_id, nombre, apellido_paterno, apellido_materno, fecha_contratacion) 
-    VALUES (2,2,'Maria','Lopez','Martinez','Senior','2020-04-10')
-    """
-)
-# Insertar datos de SALARIOS
-conn.execute(
-    """
-    INSERT INTO SALARIOS (empleado_id, salario, fecha_inicio, fecha_fin, fecha_creacion) 
-    VALUES (1,3000,'2024-04-01','2023-05-15','2023-05-15')
+    SELECT EMPLEADOS.nombre, EMPLEADOS.apellido_paterno, EMPLEADOS.apellido_materno, SALARIOS.salario  
+    FROM EMPLEADOS
+    JOIN SALARIOS ON SALARIOS.empleado_id = EMPLEADOS.id 
     """
 )
-conn.execute(
-    """
-    INSERT INTO SALARIOS(empleado_id, salario, fecha_inicio, fecha_fin, fecha_creacion) 
-    VALUES (2,3500,'2023-07-01','2024-04-30','2023-06-20')
-    """
-)
+for row in cursor:
+    print(row)
 
 
+# Consultar datos de Personal JOIN
+print("\nPERSONAL: EJERCICIOS_2")
 
-# Insertar datos de CARGOS
-conn.execute(
+cursor = conn.execute(
     """
-    INSERT INTO CARGOS (nombre, nivel, fecha_creacion) 
-    VALUES ('Gerente de Ventas','Senior','2020-04-10')
-    """
-)
-conn.execute(
-    """
-    INSERT INTO CARGOS (nombre, nivel, fecha_creacion) 
-    VALUES ('Analista de Marketing','Junior','2020-04-11')
+    SELECT EMPLEADOS.nombre, EMPLEADOS.apellido_paterno, EMPLEADOS.apellido_materno, DEPARTAMENTOS.nombre, CARGOS.nombre
+    FROM EMPLEADOS
+    JOIN DEPARTAMENTOS ON EMPLEADOS.departamento_id = DEPARTAMENTOS.id
+    JOIN CARGOS ON EMPLEADOS.cargo_id = CARGOS.id
     """
 )
-conn.execute(
-    """
-    INSERT INTO CARGOS (nombre, nivel, fecha_creacion) 
-    VALUES ('Representante de Ventas','Junior','2020-04-12')
-    """
-)
+for row in cursor:
+    print(row)
 
-    
-# Insertar datos de departamento
-conn.execute(
+
+
+# Consultar datos de Personal JOIN
+print("\nPERSONAL: EJERCICIOS_3")
+
+cursor = conn.execute(
     """
-    INSERT INTO DEPARTAMENTOS (nombre, fecha_creacion) 
-    VALUES ('Ventas','2020-04-10')
+    SELECT EMPLEADOS.nombre, EMPLEADOS.apellido_paterno, EMPLEADOS.apellido_materno, DEPARTAMENTOS.nombre, CARGOS.nombre, SALARIOS.salario  
+    FROM EMPLEADOS
+    JOIN DEPARTAMENTOS ON EMPLEADOS.departamento_id = DEPARTAMENTOS.id
+    JOIN CARGOS ON EMPLEADOS.cargo_id = CARGOS.id
+    JOIN SALARIOS ON SALARIOS.empleado_id = EMPLEADOS.id 
     """
 )
-conn.execute(
-    """
-    INSERT INTO DEPARTAMENTOS (nombre, fecha_creacion) 
-    VALUES ('Marketing','2020-04-11')
-    """
-)
+for row in cursor:
+    print(row)
+
