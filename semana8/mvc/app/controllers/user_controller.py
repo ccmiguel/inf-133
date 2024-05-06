@@ -32,3 +32,5 @@ def registro():
         return redirect(url_for('user.usuarios'))
     # Llamamos a la vista de registro
     return user_view.registro()
+
+
