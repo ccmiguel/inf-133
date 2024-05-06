@@ -6,16 +6,13 @@ from views import user_view
 # Importamos el modelo de usuario
 from models.user_model import User
 
-
 from database import db
 
 from flask import Blueprint, request, redirect, url_for, render_template
 
-
 # Un Blueprint es un objeto que agrupa
 # rutas y vistas
 user_bp = Blueprint("user", __name__)
-
 
 # Definimos las rutas "/" asociada a la funcion usuarios
 # que nos devuelve la vista de usuarios
