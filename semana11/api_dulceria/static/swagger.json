@@ -1,0 +1,205 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Dulcería API",
+        "version": "1.0.0",
+        "description": "API para administrar información de una dulcería"
+    },
+    "paths": {
+        "/api/dulces": {
+            "get": {
+                "summary": "Obtiene la lista de todos los dulces",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de dulces",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Dulce"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crea un nuevo dulce",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Dulce"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Dulce creado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Dulce"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dulces/{id}": {
+            "get": {
+                "summary": "Obtiene un dulce específico por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del dulce",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Dulce"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dulce no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Actualiza un dulce existente por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Dulce"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Dulce actualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Dulce"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dulce no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Elimina un dulce existente por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Dulce eliminado"
+                    },
+                    "404": {
+                        "description": "Dulce no encontrado"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "JWTAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "Dulce": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "marca": {
+                        "type": "string"
+                    },
+                    "peso": {
+                        "type": "number"
+                    },
+                    "sabor": {
+                        "type": "string"
+                    },
+                    "origen": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "marca",
+                    "peso",
+                    "sabor",
+                    "origen"
+                ]
+            }
+        }
+    }
+}
