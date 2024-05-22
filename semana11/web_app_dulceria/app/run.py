@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from controllers import user_controller
 
 # Importamos el controlador de animales
-from controllers import libro_controller
+from controllers import dulce_controller
 
 # Importamos la base de datos
 from database import db
@@ -14,7 +14,7 @@ from models.user_model import User
 # Inicializa la aplicación Flask
 app = Flask(__name__)
 # Configuración de la base de datos
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///libro.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dulce.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "clave-secreta"
 # Configuración de Flask-Login
@@ -34,7 +34,7 @@ def load_user(user_id):
 db.init_app(app)
 # Registra el Blueprint de usuarios
 app.register_blueprint(user_controller.user_bp)
-app.register_blueprint(libro_controller.libro_bp)
+app.register_blueprint(dulce_controller.dulce_bp)
 
 if __name__ == "__main__":
     # Crea las tablas si no existen

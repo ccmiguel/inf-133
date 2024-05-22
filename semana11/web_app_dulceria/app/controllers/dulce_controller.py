@@ -1,178 +1,65 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, redirect, url_for, flash, jsonify
+from flask_login import login_required, current_user
 from models.dulce_model import Dulce
-from views.dulce_view import render_dulce_list, render_dulce_detail
-from utils.decorators import jwt_required, roles_required
+from views import dulce_view
+from utils.decorators import role_required
 
-# Crear un blueprint para el controlador de dulces
 dulce_bp = Blueprint("dulce", __name__)
 
-
-# Ruta para obtener la lista de dulces
-@dulce_bp.route("/dulces", methods=["GET"])
-@jwt_required
-@roles_required(roles=["admin", "user"])
-def get_dulces():
+@dulce_bp.route("/dulces")
+@login_required
+def list_dulces():
     dulces = Dulce.get_all()
-    return jsonify(render_dulce_list(dulces))
+    return dulce_view.list_dulces(dulces)
 
-
-# Ruta para obtener un dulce específico por su ID
-@dulce_bp.route("/dulces/<int:id>", methods=["GET"])
-@jwt_required
-@roles_required(roles=["admin", "user"])
-def get_dulce(id):
-    dulce = Dulce.get_by_id(id)
-    if dulce:
-        return jsonify(render_dulce_detail(dulce))
-    return jsonify({"error": "Dulce no encontrado"}), 404
-
-
-# Ruta para crear un nuevo dulce
-@dulce_bp.route("/dulces", methods=["POST"])
-@jwt_required
-@roles_required(roles=["admin"])
+@dulce_bp.route("/dulces/create", methods=["GET", "POST"])
+@login_required
+@role_required("admin")
 def create_dulce():
-    data = request.json
-    marca = data.get("marca")
-    peso = data.get("peso")
-    sabor = data.get("sabor")
-    origen = data.get("origen")
+    if request.method == "POST":
+        if current_user.has_role("admin"):
+            marca = request.form["marca"]
+            peso = request.form["peso"]
+            sabor = request.form["sabor"]
+            origen = request.form["origen"]
+            dulce = Dulce(marca=marca, peso=peso, sabor=sabor, origen=origen)
+            dulce.save()
+            flash("Dulce creado exitosamente", "success")
+            return redirect(url_for("dulce.list_dulces"))
+        else:
+            return jsonify({"message": "Unauthorized"}), 403
+    return dulce_view.create_dulce()
 
-    # Validación simple de datos de entrada
-    if not marca or not peso or not sabor or not origen:
-        return jsonify({"error": "Faltan datos requeridos"}), 400
-
-    # Crear un nuevo dulce y guardarlo en la base de datos
-    dulce = Dulce(marca=marca, peso=peso, sabor=sabor, origen=origen)
-    dulce.save()
-
-    return jsonify(render_dulce_detail(dulce)), 201
-
-
-# Ruta para actualizar un dulce existente
-@dulce_bp.route("/dulces/<int:id>", methods=["PUT"])
-@jwt_required
-@roles_required(roles=["admin"])
+@dulce_bp.route("/dulces/<int:id>/update", methods=["GET", "POST"])
+@login_required
+@role_required("admin")
 def update_dulce(id):
     dulce = Dulce.get_by_id(id)
-
     if not dulce:
-        return jsonify({"error": "Dulce no encontrado"}), 404
+        return "Dulce no encontrado", 404
+    if request.method == "POST":
+        if current_user.has_role("admin"):
+            marca = request.form["marca"]
+            peso = request.form["peso"]
+            sabor = request.form["sabor"]
+            origen = request.form["origen"]
+            dulce.update(marca=marca, peso=peso, sabor=sabor, origen=origen)
+            flash("Dulce actualizado exitosamente", "success")
+            return redirect(url_for("dulce.list_dulces"))
+        else:
+            return jsonify({"message": "Unauthorized"}), 403
+    return dulce_view.update_dulce(dulce)
 
-    data = request.json
-    marca = data.get("marca")
-    peso = data.get("peso")
-    sabor = data.get("sabor")
-    origen = data.get("origen")
-
-    # Actualizar los datos del dulce
-    dulce.update(marca=marca, peso=peso, sabor=sabor, origen=origen)
-
-    return jsonify(render_dulce_detail(dulce))
-
-
-# Ruta para eliminar un dulce existente
-@dulce_bp.route("/dulces/<int:id>", methods=["DELETE"])
-@jwt_required
-@roles_required(roles=["admin"])
+@dulce_bp.route("/dulces/<int:id>/delete")
+@login_required
+@role_required("admin")
 def delete_dulce(id):
     dulce = Dulce.get_by_id(id)
-
     if not dulce:
-        return jsonify({"error": "Dulce no encontrado"}), 404
-
-    # Eliminar el dulce de la base de datos
-    dulce.delete()
-
-    # Respuesta vacía con código de estado 204 (sin contenido)
-    return "", 204
-
-
-
-from flask import Blueprint, request, jsonify
-from models.dulce_model import Dulce
-from utils.decorators import jwt_required, roles_required
-
-# Crear un blueprint para el controlador de dulces
-dulce_bp = Blueprint("dulce", __name__)
-
-
-# Ruta para obtener la lista de dulces
-@dulce_bp.route("/dulces", methods=["GET"])
-@jwt_required
-@roles_required(roles=["admin", "user"])
-def get_dulces():
-    dulces = Dulce.get_all()
-    return jsonify(render_dulce_list(dulces))
-
-
-# Ruta para obtener un dulce específico por su ID
-@dulce_bp.route("/dulces/<int:id>", methods=["GET"])
-@jwt_required
-@roles_required(roles=["admin", "user"])
-def get_dulce(id):
-    dulce = Dulce.get_by_id(id)
-    if dulce:
-        return jsonify(render_dulce_detail(dulce))
-    return jsonify({"error": "Dulce no encontrado"}), 404
-
-
-# Ruta para crear un nuevo dulce
-@dulce_bp.route("/dulces", methods=["POST"])
-@jwt_required
-@roles_required(roles=["admin"])
-def create_dulce():
-    data = request.json
-    marca = data.get("marca")
-    peso = data.get("peso")
-    sabor = data.get("sabor")
-    origen = data.get("origen")
-
-    # Validación simple de datos de entrada
-    if not marca or not peso or not sabor or not origen:
-        return jsonify({"error": "Faltan datos requeridos"}), 400
-
-    # Crear un nuevo dulce y guardarlo en la base de datos
-    dulce = Dulce(marca=marca, peso=peso, sabor=sabor, origen=origen)
-    dulce.save()
-
-    return jsonify(render_dulce_detail(dulce)), 201
-
-
-# Ruta para actualizar un dulce existente
-@dulce_bp.route("/dulces/<int:id>", methods=["PUT"])
-@jwt_required
-@roles_required(roles=["admin"])
-def update_dulce(id):
-    dulce = Dulce.get_by_id(id)
-
-    if not dulce:
-        return jsonify({"error": "Dulce no encontrado"}), 404
-
-    data = request.json
-    marca = data.get("marca")
-    peso = data.get("peso")
-    sabor = data.get("sabor")
-    origen = data.get("origen")
-
-    # Actualizar los datos del dulce
-    dulce.update(marca=marca, peso=peso, sabor=sabor, origen=origen)
-
-    return jsonify(render_dulce_detail(dulce))
-
-
-# Ruta para eliminar un dulce existente
-@dulce_bp.route("/dulces/<int:id>", methods=["DELETE"])
-@jwt_required
-@roles_required(roles=["admin"])
-def delete_dulce(id):
-    dulce = Dulce.get_by_id(id)
-
-    if not dulce:
-        return jsonify({"error": "Dulce no encontrado"}), 404
-
-    # Eliminar el dulce de la base de datos
-    dulce.delete()
-
-    # Respuesta vacía con código de estado 204 (sin contenido)
-    return "", 204
+        return "Dulce no encontrado", 404
+    if current_user.has_role("admin"):
+        dulce.delete()
+        flash("Dulce eliminado exitosamente", "success")
+        return redirect(url_for("dulce.list_dulces"))
+    else:
+        return jsonify({"message": "Unauthorized"}), 403
