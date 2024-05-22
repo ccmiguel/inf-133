@@ -1,43 +1,53 @@
-from flask import Flask
-from flask_login import LoginManager
-
-# Importamos el controlador de usuarios
-from controllers import user_controller
-
-# Importamos el controlador de animales
-from controllers import animal_controller
-
-# Importamos la base de datos
 from database import db
-from models.user_model import User
 
-# Inicializa la aplicación Flask
-app = Flask(__name__)
-# Configuración de la base de datos
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///zoo.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SECRET_KEY"] = "clave-secreta"
-# Configuración de Flask-Login
-login_manager = LoginManager()
-# Especifica la ruta de inicio de sesión
-login_manager.login_view = "user.login"
-login_manager.init_app(app)
+# Define la clase `Libro` que hereda de `db.Model`
+# `Libro` representa la tabla `libros` en la base de datos
+class Libro(db.Model):
+    __tablename__ = "libros"
 
+    # Define las columnas de la tabla `libros`
+    id = db.Column(db.Integer, primary_key=True)
+    autor = db.Column(db.String(100), nullable=False)
+    titulo = db.Column(db.String(100), nullable=False)
+    edicion = db.Column(db.String(100), nullable=False)
+    disponibilidad = db.Column(db.String(100), nullable=False)
 
-# Función para cargar un usuario basado en su ID
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+    # Inicializa la clase `Libro`
+    def __init__(self, id, autor, titulo, edicion, disponibilidad):
+        self.id = id
+        self.autor = autor
+        self.titulo = titulo
+        self.edicion = edicion
+        self.disponibilidad = disponibilidad
 
+    # Guarda un libro en la base de datos
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
-# Inicializa `db` con la aplicación Flask
-db.init_app(app)
-# Registra el Blueprint de usuarios
-app.register_blueprint(user_controller.user_bp)
-app.register_blueprint(animal_controller.animal_bp)
+    # Obtiene todos los libros de la base de datos
+    @staticmethod
+    def get_all():
+        return Libro.query.all()
 
-if __name__ == "__main__":
-    # Crea las tablas si no existen
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+    # Obtiene un libro por su ID
+    @staticmethod
+    def get_by_id(id):
+        return Libro.query.get(id)
+
+    # Actualiza un libro en la base de datos
+    def update(self, autor=None, titulo=None, edicion=None, disponibilidad=None):
+        if autor is not None:
+            self.autor = autor
+        if titulo is not None:
+            self.titulo = titulo
+        if edicion is not None:
+            self.edicion = edicion
+        if disponibilidad is not None:
+            self.disponibilidad = disponibilidad
+        db.session.commit()
+
+    # Elimina un libro de la base de datos
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()

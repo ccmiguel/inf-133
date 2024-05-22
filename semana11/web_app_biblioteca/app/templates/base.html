@@ -8,7 +8,7 @@
     <title>{{ title }}</title>
 </head>
 <body>
-    <h1 class="title">MVC</h1>
+    <h1 class="title">MVC - Biblioteca</h1>
     {% if current_user.is_authenticated %}
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <div id="navbarBasicExample" class="navbar-menu">
@@ -17,15 +17,15 @@
                 <a class="navbar-item" href="{{ url_for('user.list_users') }}">
                     Lista de Usuarios
                 </a>
-                <a class="navbar-item" href="{{ url_for('animal.create_animal') }}">
-                    Crear Animal
+                <a class="navbar-item" href="{{ url_for('libro.create_libro') }}">
+                    Crear Libro
                 </a>
                 {% endif %}
                 <a class="navbar-item" href="{{ url_for('user.profile', id=current_user.id) }}">
                     Perfil
                 </a>
-                <a class="navbar-item" href="{{ url_for('animal.list_animals') }}">
-                    Lista de Animales
+                <a class="navbar-item" href="{{ url_for('libro.list_libros') }}">
+                    Lista de Libros
                 </a>
                 <a class="navbar-item" href="{{ url_for('user.logout') }}">
                     Cerrar Sesión
