@@ -1,22 +1,27 @@
 {
     "openapi": "3.0.1",
     "info": {
-        "title": "Biblioteca API",
+        "title": "Tienda Online API",
         "version": "1.0.0"
     },
     "paths": {
-        "/api/libros": {
+        "/api/products": {
             "get": {
-                "summary": "Obtiene la lista de todos los libros",
+                "summary": "Obtiene la lista de todos los productos",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Lista de libros",
+                        "description": "Lista de productos",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Libro"
+                                        "$ref": "#/components/schemas/Product"
                                     }
                                 }
                             }
@@ -25,23 +30,28 @@
                 }
             },
             "post": {
-                "summary": "Crea un nuevo libro",
+                "summary": "Crea un nuevo producto",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Libro"
+                                "$ref": "#/components/schemas/Product"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Libro creado",
+                        "description": "Producto creado",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Libro"
+                                    "$ref": "#/components/schemas/Product"
                                 }
                             }
                         }
@@ -49,9 +59,14 @@
                 }
             }
         },
-        "/api/libros/{id}": {
+        "/api/products/{id}": {
             "get": {
-                "summary": "Obtiene un libro específico por su ID",
+                "summary": "Obtiene un producto específico por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -64,22 +79,27 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Detalles del libro",
+                        "description": "Detalles del producto",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Libro"
+                                    "$ref": "#/components/schemas/Product"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Libro no encontrado"
+                        "description": "Producto no encontrado"
                     }
                 }
             },
             "put": {
-                "summary": "Actualiza un libro existente por su ID",
+                "summary": "Actualiza un producto existente por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -94,29 +114,34 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Libro"
+                                "$ref": "#/components/schemas/Product"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Libro actualizado",
+                        "description": "Producto actualizado",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Libro"
+                                    "$ref": "#/components/schemas/Product"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Libro no encontrado"
+                        "description": "Producto no encontrado"
                     }
                 }
             },
             "delete": {
-                "summary": "Elimina un libro existente por su ID",
+                "summary": "Elimina un producto existente por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -129,10 +154,10 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Libro eliminado"
+                        "description": "Producto eliminado"
                     },
                     "404": {
-                        "description": "Libro no encontrado"
+                        "description": "Producto no encontrado"
                     }
                 }
             }
@@ -177,13 +202,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "access_token": {
-                                            "type": "string",
-                                            "description": "Token de acceso JWT para el usuario"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/Token"
                                 }
                             }
                         }
@@ -204,30 +223,32 @@
             }
         },
         "schemas": {
-            "Libro": {
+            "Product": {
                 "type": "object",
                 "properties": {
                     "id": {
                         "type": "integer",
                         "readOnly": true
                     },
-                    "autor": {
+                    "name": {
                         "type": "string"
                     },
-                    "titulo": {
+                    "description": {
                         "type": "string"
                     },
-                    "edicion": {
-                        "type": "string"
+                    "price": {
+                        "type": "number",
+                        "format": "float"
                     },
-                    "disponibilidad": {
-                        "type": "boolean"
+                    "stock": {
+                        "type": "integer"
                     }
                 },
                 "required": [
-                    "autor",
-                    "titulo",
-                    "edicion"
+                    "name",
+                    "description",
+                    "price",
+                    "stock"
                 ]
             },
             "User": {
@@ -239,7 +260,7 @@
                     "password": {
                         "type": "string"
                     },
-                    "role": {
+                    "roles": {
                         "type": "array",
                         "items": {
                             "type": "string",
@@ -253,7 +274,7 @@
                 "required": [
                     "username",
                     "password",
-                    "role"
+                    "roles"
                 ]
             },
             "Login": {
@@ -269,29 +290,6 @@
                 "required": [
                     "username",
                     "password"
-                ]
-            },
-            "Animal": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "species": {
-                        "type": "string"
-                    },
-                    "age": {
-                        "type": "integer"
-                    }
-                },
-                "required": [
-                    "name",
-                    "species",
-                    "age"
                 ]
             }
         }

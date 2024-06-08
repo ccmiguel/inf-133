@@ -8,6 +8,11 @@
         "/api/libros": {
             "get": {
                 "summary": "Obtiene la lista de todos los libros",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Lista de libros",
@@ -26,6 +31,11 @@
             },
             "post": {
                 "summary": "Crea un nuevo libro",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -52,6 +62,11 @@
         "/api/libros/{id}": {
             "get": {
                 "summary": "Obtiene un libro específico por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -80,6 +95,11 @@
             },
             "put": {
                 "summary": "Actualiza un libro existente por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -117,6 +137,11 @@
             },
             "delete": {
                 "summary": "Elimina un libro existente por su ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -221,13 +246,14 @@
                         "type": "string"
                     },
                     "disponibilidad": {
-                        "type": "boolean"
+                        "type": "string"
                     }
                 },
                 "required": [
                     "autor",
                     "titulo",
-                    "edicion"
+                    "edicion",
+                    "disponibilidad"
                 ]
             },
             "User": {
@@ -269,29 +295,6 @@
                 "required": [
                     "username",
                     "password"
-                ]
-            },
-            "Animal": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "species": {
-                        "type": "string"
-                    },
-                    "age": {
-                        "type": "integer"
-                    }
-                },
-                "required": [
-                    "name",
-                    "species",
-                    "age"
                 ]
             }
         }
