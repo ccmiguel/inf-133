@@ -16,7 +16,7 @@ def test_create_product(test_client, admin_auth_headers):
         "name": "Smartphone",
         "description": "Powerful smartphone with advanced features",
         "price": 599.99,
-        "stock": 100,
+        "stock": 100
     }
     response = test_client.post("/api/products", json=data, headers=admin_auth_headers)
     assert response.status_code == 201
@@ -37,6 +37,7 @@ def test_get_product(test_client, admin_auth_headers):
 def test_get_nonexistent_product(test_client, admin_auth_headers):
     # El usuario con el rol de "admin" debería recibir un error al intentar obtener un producto inexistente
     response = test_client.get("/api/products/999", headers=admin_auth_headers)
+    print(response.json)
     assert response.status_code == 404
     assert response.json["error"] == "Producto no encontrado"
 
@@ -55,7 +56,7 @@ def test_update_product(test_client, admin_auth_headers):
         "name": "Smartphone Pro",
         "description": "Updated version with improved performance",
         "price": 699.99,
-        "stock": 150,
+        "stock": 150
     }
     response = test_client.put("/api/products/1", json=data, headers=admin_auth_headers)
     assert response.status_code == 200

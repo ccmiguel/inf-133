@@ -25,7 +25,7 @@ def get_product(id):
     product = Product.get_by_id(id)
     if product:
         return jsonify(render_product_detail(product))
-    return jsonify({"error": "product no encontrado"}), 404
+    return jsonify({"error": "Producto no encontrado"}), 404
 
 
 # Ruta para crear un nuevo product
@@ -58,7 +58,7 @@ def update_product(id):
     product = Product.get_by_id(id)
 
     if not product:
-        return jsonify({"error": "product no encontrado"}), 404
+        return jsonify({"error": "Producto no encontrado"}), 404
 
     data = request.json
     name = data.get("name")
@@ -80,7 +80,7 @@ def delete_product(id):
     product = Product.get_by_id(id)
 
     if not product:
-        return jsonify({"error": "product no encontrado"}), 404
+        return jsonify({"error": "Producto no encontrado"}), 404
 
     # Eliminar el product de la base de datos
     product.delete()

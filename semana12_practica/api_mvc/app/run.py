@@ -34,6 +34,10 @@ db.init_app(app)
 # Inicializa la extensión JWTManager
 jwt = JWTManager(app)
 
+# Registra los blueprints
+app.register_blueprint(product_bp, url_prefix='/api')
+app.register_blueprint(user_bp, url_prefix='/api')
+
 
 # Crea las tablas si no existen
 with app.app_context():

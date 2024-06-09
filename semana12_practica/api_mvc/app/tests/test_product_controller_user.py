@@ -11,7 +11,7 @@ def test_create_product(test_client, admin_auth_headers):
         "name": "Smartphone",
         "description": "Powerful smartphone with advanced features",
         "price": 599.99,
-        "stock": 100,
+        "stock": 100
     }
     response = test_client.post("/api/products", json=data, headers=admin_auth_headers)
     assert response.status_code == 201
