@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="subtitle is-2">Lista de Dulces</h2>
+    
+    {% if current_user.has_role('admin') %}
+    <a href="{{ url_for('dulce.create_dulce') }}" class="button is-primary mb-4">
+        <i class="fas fa-plus-circle"></i> Crear Nuevo Dulce
+    </a>
+    {% endif %}
+    
+    <div class="columns is-multiline">
+        {% for dulce in dulces %}
+        <div class="column is-one-third">
+            <div class="card">
+                <!-- Imagen del dulce -->
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        {% if dulce.imagen_url %}
+                        <img src="{{ url_for('static', filename=dulce.imagen_url) }}" 
+                             alt="{{ dulce.nombre }}" 
+                             style="object-fit: cover;">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/default_candy.jpg') }}" 
+                             alt="Imagen por defecto"
+                             style="object-fit: cover;">
+                        {% endif %}
+                    </figure>
+                </div>
+                
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">{{ dulce.nombre }}</p>
+                            <p class="subtitle is-6">{{ dulce.marca }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content">
+                        <p><strong>Nombre:</strong> {{ dulce.nombre }}</p>
+                        <p><strong>Marca:</strong> {{ dulce.marca }}</p>
+                        <p><strong>Peso:</strong> {{ dulce.peso }}g</p>
+                        <p><strong>Sabor:</strong> {{ dulce.sabor }}</p>
+                        <p><strong>Origen:</strong> {{ dulce.origen }}</p>
+                        
+                        {% if dulce.precio %}
+                        <p><strong>Precio:</strong> ${{ "%.2f"|format(dulce.precio) }}</p>
+                        {% endif %}
+                        
+                        {% if dulce.stock %}
+                        <p><strong>Stock:</strong> {{ dulce.stock }}</p>
+                        {% endif %}
+                        
+                        {% if dulce.descripcion %}
+                        <p><strong>Descripción:</strong> {{ dulce.descripcion[:100] }}{% if dulce.descripcion|length > 100 %}...{% endif %}</p>
+                        {% endif %}
+                        
+                        {% if dulce.fecha_vencimiento %}
+                        <p><strong>Vence:</strong> {{ dulce.fecha_vencimiento.strftime('%d/%m/%Y') }}</p>
+                        {% endif %}
+                        
+                        <p>
+                            <strong>Estado:</strong> 
+                            {% if dulce.disponible %}
+                            <span class="tag is-success">Disponible</span>
+                            {% else %}
+                            <span class="tag is-danger">No disponible</span>
+                            {% endif %}
+                        </p>
+                        
+                        <div class="buttons mt-3">
+                            {% if current_user.has_role('admin') %}
+                            <a href="{{ url_for('dulce.update_dulce', id=dulce.id) }}" class="button is-info is-small">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a href="{{ url_for('dulce.delete_dulce', id=dulce.id) }}" 
+                               class="button is-danger is-small"
+                               onclick="return confirm('¿Estás seguro de eliminar este dulce?')">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <footer class="card-footer">
+                    <small class="card-footer-item">
+                        Creado: {{ dulce.fecha_creacion.strftime('%d/%m/%Y') }}
+                    </small>
+                </footer>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .image.is-4by3 {
+        padding-top: 75%;
+    }
+    .image.is-4by3 img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style>
+{% endblock %}
